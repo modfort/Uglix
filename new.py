@@ -31,7 +31,6 @@ class Conn:
 	def echo(self,msg):
 		return self.conn.post("/bin/echo",msg=msg)
 		
-	
 
 	def get(self,path):
 		return self.conn.get(path)
@@ -53,7 +52,8 @@ class Conn:
 	def get_mail2(self,number):
 		return (self.conn.get(self.mail+"/"+str(number)))
 	
-	def getAllmailInFile(self,file):
+	def getAllindexmail(self):
+	
 		mail=self.get_inbox().split("\n")[5:]
 		l=[]
 		for i in mail:
@@ -64,27 +64,32 @@ class Conn:
 				l.append(int(i.split("  ")[1]))
 			except:
 				continue
+		return l		
+		
+
+	def getAllmailInFile2(self,file):
 		with open(file,"w") as f:
-			for e in l:
+			for e in self.getAllindexmail():
 				f.write(self.get_mail2(e))	
 
-	def getNLastmail(self,file,n):
-		mail=self.get_inbox().split("\n")[5:]
-		l=[]
-		for i in mail:
-			if i =="":
-				mail.remove("")
-		for i in mail:
-			try:
-				l.append(int(i.split("  ")[1]))
-			except:
-				continue
-		print(l)
-		l=l[:n]
-		print("après")
-		print(l)			
+	def getAllmail(self):
+			l=[]
+			for e in self.getAllindexmail():
+				 l.append(self.get_mail2(e))
+			return l	 	
+
+	def getNLastmail(self,n):
+		
+		mail=[]
+		for e in self.getAllindexmail()[:n]:
+				mail.append(self.get_mail2(e))
+		return mail			
+
+
+	def getNLastmail2(self,file,n):
+		
 		with open(file,"w") as f:
-			for e in l:
+			for e in self.getAllindexmail()[:n]:
 				f.write(self.get_mail2(e))			
 			
 	def get_mail(self,f,number):
@@ -104,14 +109,12 @@ class Conn:
 		return self.post("/bin/crypto_helpdesk/ticket/"+str(num)+"close"," ")
 
 
-
 	def get_ticket(self,num):
 		return self.get(self.helpdesk+"/ticket/"+str(num))
 	
+
 	def get_storage(self,num):
 		return self.get("/bin/long-term-storage/"+str(num))
-
-
 
 	
 	def print_att(self,num,att):
