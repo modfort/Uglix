@@ -37,7 +37,7 @@ class Conn:
 	
 	
 	def post(self,path,thing):
-		return self.conn.post(path,thing)
+		return self.conn.post(path,msg=thing)
 
 	
 	def get_inbox(self):
