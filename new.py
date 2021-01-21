@@ -2,7 +2,7 @@ from client import *
 
 class Conn:
 		
-	def __init__(self,user="rodgersbrett",password="!uFSXeNd%2"):
+	def __init__(self,user,password):
 		self.user=user
 		self.password=password
 		self.conn=Connection()
@@ -20,9 +20,16 @@ class Conn:
 
 	def get(self,path):
 		return self.conn.get(path)
-				
+	
+	
+	def post(self,path,thing):
+		return self.conn.post(path,thing)
+
+	
 	def get_inbox(self):
 		return self.get(self.mail)
+
+	
 	def get_mail2(self,number):
 		return (self.conn.get(self.mail+"/"+str(number)))
 	
@@ -39,7 +46,12 @@ class Conn:
 	def get_ticket_all(self):
 		return self.get(self.helpdesk)
 		
-	
+
+	def close_ticket(self,num):
+		return self.post("/bin/crypto_helpdesk/ticket/"+str(num)+"close"," ")
+
+
+
 	def get_ticket(self,num):
 		return self.get(self.helpdesk+"/ticket/"+str(num))
 	
