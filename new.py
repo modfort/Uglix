@@ -1,4 +1,9 @@
 from client import *
+import os
+import requests
+import re 
+
+
 
 class Conn:
 		
@@ -120,6 +125,26 @@ class Conn:
 	def print_att(self,num,att):
 		return self.get(self.helpdesk+"/ticket/"+str(num)+"/attachment/"+str(att))
 	
+	def closet(self,num):
+		return self.post(self.helpdesk+"/ticket/"+str(num)+"/close","nothing")	
+
+#the doc will be created in a special directory at ../doc so we have to check if it was created
+	def getdoc(self):
+		os.chdir("../")
+		a = False
+		for i in os.listdir():
+			if(i == "doc"):
+				a = True
+		if(a==False):
+			os.mkdir("doc")
+		print(os.listdir())				
+		reg=re.compile("/doc/\w*")
+		req=requests.get("http://isec.fil.cool/uglix/doc/").text
+		print(reg.findall(req))	
+		for i in reg.findall(req):
+			with open(".."+i,"w") as f :
+				print("http://isec.fil.cool/uglix"+i)
+				f.write(requests.get("http://isec.fil.cool/uglix"+i).text)
 
 	"""
 	def get_all_mail(self,f,mode="w"):
