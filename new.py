@@ -32,14 +32,13 @@ class Conn:
 
 		print(rep)
 
-	
+	#all the parametre of post have to be a dictionnay
 	def echo(self,msg):
-		return self.conn.post("/bin/echo",msg=msg)
+		return self.conn.post("/bin/echo",msg)
 		
 
 	def get(self,path):
 		return self.conn.get(path)
-	
 	
 	def post(self,path,thing):
 		return self.conn.post(path,msg=thing)
@@ -130,15 +129,14 @@ class Conn:
 
 #the doc will be created in a special directory at ../doc so we have to check if it was created
 	def getdoc(self):
-		os.chdir("../")
 		a = False
-		for i in os.listdir():
+		for i in os.listdir(".."):
 			if(i == "doc"):
 				a = True
-		if(a==False):
-			os.mkdir("doc")
+		if(a == False):
+			os.mkdir("../doc")
 		print(os.listdir())				
-		reg=re.compile("/doc/\w*")
+		reg=re.compile("/doc/\w*-?\w+")
 		req=requests.get("http://isec.fil.cool/uglix/doc/").text
 		print(reg.findall(req))	
 		for i in reg.findall(req):
